@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-# from playsound import playsound
 from PIL import Image, ImageDraw
 import face_recognition
 from tensorflow import keras
@@ -9,12 +8,9 @@ eye_model = keras.models.load_model('best_model_2.h5')
 # webcam frame is inputted into function
 def eye_cropper(frame):
 
-    # create a variable for the facial feature coordinates
     facial_features_list = face_recognition.face_landmarks(frame)
 
-    # create a placeholder list for the eye coordinates
-    # and append coordinates for eyes to list unless eyes
-    # weren't found by facial recognition
+    # a placeholder list for the eye coordinates
     try:
         eye = facial_features_list[0]['left_eye']
     except:
@@ -23,20 +19,17 @@ def eye_cropper(frame):
         except:
             return
     
-    # establish the max x and y coordinates of the eye
+    # the max x and y coordinates of the eye
     x_max = max([coordinate[0] for coordinate in eye])
     x_min = min([coordinate[0] for coordinate in eye])
     y_max = max([coordinate[1] for coordinate in eye])
     y_min = min([coordinate[1] for coordinate in eye])
 
-    # establish the range of x and y coordinates
+    # the range of x and y coordinates
     x_range = x_max - x_min
     y_range = y_max - y_min
 
-    # in order to make sure the full eye is captured,
-    # calculate the coordinates of a square that has a
-    # 50% cushion added to the axis with a larger range and
-    # then match the smaller range to the cushioned larger range
+    # to make sure the full eye is captured
     if x_range > y_range:
         right = round(.5*x_range) + x_max
         left = x_min - round(.5*x_range)
@@ -48,10 +41,10 @@ def eye_cropper(frame):
         right = round((((bottom-top) - x_range))/2) + x_max
         left = x_min - round((((bottom-top) - x_range))/2)
 
-    # crop the image according to the coordinates determined above
+    # cropping the image according to the coordinates determined above
     cropped = frame[top:(bottom + 1), left:(right + 1)]
 
-    # resize the image
+    # resizing the image
     cropped = cv2.resize(cropped, (80,80))
     image_for_prediction = cropped.reshape(-1, 80, 80, 3)
 
@@ -70,7 +63,7 @@ counter = 0
 # create a while loop that runs while webcam is in use
 while True:
 
-    # capture frames being outputted by webcam
+    # capture frames from webcam
     ret, frame = cap.read()
 
     # use only every other frame to manage speed and memory usage
