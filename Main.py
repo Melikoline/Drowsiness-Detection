@@ -94,7 +94,7 @@ while True:
 
         cv2.putText(frame, status, (round(w/2)-80,70), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 2, cv2.LINE_4)
         x1, y1,w1,h1 = 0,0,175,75
-        ## Draw black backgroun rectangle
+        ## Draw a background rectangle
 #         cv2.rectangle(frame, (x1,x1), (x1+w1-20, y1+h1-20), (0,0,0), -1)
 #         ## Add text
 #         cv2.putText(frame, 'Active', (x1 +int(w1/10), y1+int(h1/2)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255,0),2)
